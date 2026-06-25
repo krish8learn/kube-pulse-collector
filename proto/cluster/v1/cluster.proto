@@ -1,0 +1,40 @@
+syntax = "proto3";
+
+package kubepulse.cluster.v1;
+
+option go_package = "github.com/krish/kube-pulse-gateway/gen/cluster/v1";
+
+service ClusterService {
+  rpc GetClusterSummary(GetClusterSummaryRequest) returns (GetClusterSummaryResponse);
+  rpc GetNodes(GetNodesRequest)                   returns (GetNodesResponse);
+  rpc GetNode(GetNodeRequest)                     returns (GetNodeResponse);
+}
+
+message GetClusterSummaryRequest {}
+message GetNodesRequest {}
+message GetNodeRequest {
+  string name = 1;
+}
+
+message NodeInfo {
+  string name               = 1;
+  string status             = 2;
+  string cpu_capacity       = 3;
+  string memory_capacity    = 4;
+  string cpu_allocatable    = 5;
+  string memory_allocatable = 6;
+  int32  pod_count          = 7;
+  string kubernetes_version = 8;
+  string age                = 9;
+}
+
+message ClusterSummary {
+  int32 total_nodes  = 1;
+  int32 ready_nodes  = 2;
+  int32 total_pods   = 3;
+  int32 running_pods = 4;
+}
+
+message GetClusterSummaryResponse { ClusterSummary summary = 1; }
+message GetNodesResponse           { repeated NodeInfo nodes = 1; }
+message GetNodeResponse            { NodeInfo node = 1; }
